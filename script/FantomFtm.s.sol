@@ -2,14 +2,13 @@
 pragma solidity ^0.8.4;
 
 import {TimelockController} from "openzeppelin-contracts/governance/TimelockController.sol";
-import {EffectivelyAllocatingPoolEth} from "../src/EffectivelyAllocatingPoolEth.sol";
+import {EfficientlyAllocatingPoolEth} from "../src/EfficientlyAllocatingPoolEth.sol";
 import {DelayedWithdrawalToolEth} from "../src/DelayedWithdrawalToolEth.sol";
 import {Allocator} from "../src/Allocator.sol";
 import {EthAdapter} from "../src/EthAdapter.sol";
 import "forge-std/Script.sol";
 
 contract FantomFtmScript is Script {
-
     uint key;
 
     address govMultisig;
@@ -57,7 +56,7 @@ contract FantomFtmScript is Script {
         platformAdapters[i++] = address(tarotAdapter);
         platformAdapters[i++] = address(tarotAdapter);
 
-        address eap = address(new EffectivelyAllocatingPoolEth(
+        address eap = address(new EfficientlyAllocatingPoolEth(
             underlying,
             name,
             symbol,

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
-interface IEffectivelyAllocatingPool {
+interface IEfficientlyAllocatingPool {
     function allocate(bytes32[] memory _allocationConfigs) external;
 
     function claimRewards(address _allocation) external;

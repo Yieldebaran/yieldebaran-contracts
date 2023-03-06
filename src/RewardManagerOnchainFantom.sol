@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import {IEffectivelyAllocatingPool} from "./interfaces/IEffectivelyAllocatingPool.sol";
+import {IEfficientlyAllocatingPool} from "./interfaces/IEfficientlyAllocatingPool.sol";
 import {IAllocationConfig} from "./interfaces/IAllocationConfig.sol";
 import {CalldataDecoder} from "./CalldataDecoder.sol";
 import {ComptrollerInterface} from "./Platforms/Compound/ComptrollerInterface.sol";
@@ -76,7 +76,7 @@ contract RewardManagerOnchainFantom {
         cTokens[0] = _cToken;
 
         ComptrollerInterface(screamComptroller).claimComp(holders, cTokens, false, true);
-        IEffectivelyAllocatingPool(_eap).pullToken(scream, address(this));
+        IEfficientlyAllocatingPool(_eap).pullToken(scream, address(this));
 
         uint256 screamAmount = IERC20(scream).balanceOf(address(this));
 

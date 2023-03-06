@@ -4,7 +4,7 @@ pragma solidity ^0.8.4;
 import {IERC20, SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {DelayedWithdrawalTool} from "./DelayedWithdrawalTool.sol";
 import {IWETH} from "./IWETH.sol";
-import {IEffectivelyAllocatingPoolEth} from "./interfaces/IEffectivelyAllocatingPoolEth.sol";
+import {IEfficientlyAllocatingPoolEth} from "./interfaces/IEfficientlyAllocatingPoolEth.sol";
 import {IDelayedWithdrawalToolEth} from "./interfaces/IDelayedWithdrawalToolEth.sol";
 import "./Errors.sol";
 
@@ -71,6 +71,6 @@ contract DelayedWithdrawalToolEth is DelayedWithdrawalTool, IDelayedWithdrawalTo
         delete sharesRequested[_requestOwner];
         delete requestTime[_requestOwner];
 
-        IEffectivelyAllocatingPoolEth(payable(pool)).instantWithdrawalEth(sharesAmount, 0, _beneficiary);
+        IEfficientlyAllocatingPoolEth(payable(pool)).instantWithdrawalEth(sharesAmount, 0, _beneficiary);
     }
 }

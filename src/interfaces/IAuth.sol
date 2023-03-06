@@ -3,6 +3,8 @@ pragma solidity ^0.8.4;
 interface IAuth {
     function admin() external view returns (address);
 
+    function pendingAdmin() external view returns (address);
+
     function allocators(address) external view returns (bool);
 
     function allowStatus(address) external view returns (bool);
@@ -15,7 +17,9 @@ interface IAuth {
 
     function rewardManager() external view returns (address);
 
-    function setAdmin(address _admin) external;
+    function claimAdminship() external;
+
+    function transferAdminship(address _admin) external;
 
     function setAllocator(address _allocator, bool _flag) external;
 

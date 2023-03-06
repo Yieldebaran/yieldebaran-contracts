@@ -1,6 +1,6 @@
 # Yieldebaran
 
-This repository contains core smart contracts for the Effectively Allocating Protocol "Yieldebaran V0".
+This repository contains core smart contracts for the Efficiently Allocating Protocol "Yieldebaran V0".
 Project uses Ethereum testing framework [Forge](https://github.com/foundry-rs/foundry/tree/master/forge) by [Foundry](https://github.com/foundry-rs/foundry)
 
 ## Deployment info

@@ -5,9 +5,13 @@ import {IAuth} from "./interfaces/IAuth.sol";
 import "./Errors.sol";
 
 contract Auth is IAuth {
-    address public override admin = msg.sender;
+    // not a god address - manages operational things
+    // like changing allocator address, managing reserves etc
+    address public override admin;
 
-    address public override reservesManager = msg.sender;
+    address public override pendingAdmin;
+
+    address public override reservesManager;
     address public override rewardManager;
 
     /// @notice it's immutable!
@@ -21,6 +25,7 @@ contract Auth is IAuth {
 
     bool public override restrictedPhase = true;
 
+    event AdminQueued(address indexed pendingAdmin);
     event AdminSet(address indexed admin);
     event Allowed(address indexed user, bool status);
     event RestrictionPhase(bool status);
@@ -67,7 +72,9 @@ contract Auth is IAuth {
     }
 
     constructor(address _allocator, address _rewardManager, address _timeLock, address _emergencyTimeLock) {
+        admin = msg.sender;
         emit AdminSet(msg.sender);
+        reservesManager = msg.sender;
         emit ReservesManagerSet(msg.sender);
         rewardManager = _rewardManager;
         emit RewardManagerSet(_rewardManager);
@@ -82,9 +89,16 @@ contract Auth is IAuth {
         emit EmergencyTimeLockSet(_emergencyTimeLock);
     }
 
-    function setAdmin(address _admin) external override onlyAdmin {
-        admin = _admin;
-        emit AdminSet(_admin);
+    function transferAdminship(address _admin) external override onlyAdmin {
+        pendingAdmin = _admin;
+        emit AdminQueued(_admin);
+    }
+
+    function claimAdminship() external override {
+        if (pendingAdmin != msg.sender) revert AuthFailed();
+        admin = msg.sender;
+        delete pendingAdmin;
+        emit AdminSet(msg.sender);
     }
 
     function setAllowedToInteract(address _user, bool _status) external override onlyAdmin {

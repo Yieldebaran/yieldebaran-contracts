@@ -2,12 +2,12 @@
 pragma solidity ^0.8.4;
 
 import {IWETH} from "./IWETH.sol";
-import {EffectivelyAllocatingPool} from "./EffectivelyAllocatingPool.sol";
+import {EfficientlyAllocatingPool} from "./EfficientlyAllocatingPool.sol";
 import {IERC20, SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
-import {IEffectivelyAllocatingPoolEth} from "./interfaces/IEffectivelyAllocatingPoolEth.sol";
+import {IEfficientlyAllocatingPoolEth} from "./interfaces/IEfficientlyAllocatingPoolEth.sol";
 import "./Errors.sol";
 
-contract EffectivelyAllocatingPoolEth is EffectivelyAllocatingPool, IEffectivelyAllocatingPoolEth {
+contract EfficientlyAllocatingPoolEth is EfficientlyAllocatingPool, IEfficientlyAllocatingPoolEth {
     constructor(
         address _underlying,
         string memory _name,
@@ -20,7 +20,7 @@ contract EffectivelyAllocatingPoolEth is EffectivelyAllocatingPool, IEffectively
         address[] memory _allocations,
         address[] memory _platformAdapters
     )
-        EffectivelyAllocatingPool(
+        EfficientlyAllocatingPool(
             _underlying,
             _name,
             _symbol,

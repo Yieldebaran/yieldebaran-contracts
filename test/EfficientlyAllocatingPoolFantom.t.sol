@@ -4,15 +4,15 @@ pragma solidity ^0.8.4;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "forge-std/console2.sol";
-import {EffectivelyAllocatingPool} from "../src/EffectivelyAllocatingPool.sol";
+import {EfficientlyAllocatingPool} from "../src/EfficientlyAllocatingPool.sol";
 import {IERC20, SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {AllocationConfig} from "../src/AllocationConfig.sol";
 import {DelayedWithdrawalTool} from "../src/DelayedWithdrawalTool.sol";
 import {Allocator} from "../src/Allocator.sol";
-import {EffectivelyAllocatingPoolTest} from "./EffectivelyAllocatingPool.t.sol";
+import {EfficientlyAllocatingPoolTest} from "./EfficientlyAllocatingPool.t.sol";
 import {RewardManager1inchFantom} from "../src/RewardManager1inchFantom.sol";
 
-abstract contract EffectivelyAllocatingPoolFantomTest is EffectivelyAllocatingPoolTest {
+abstract contract EfficientlyAllocatingPoolFantomTest is EfficientlyAllocatingPoolTest {
     RewardManager1inchFantom public rewardManager;
     address public constant scream = 0xe0654C8e6fd4D733349ac7E09f6f23DA256bF475;
 

@@ -5,18 +5,18 @@ import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 import "forge-std/console2.sol";
-import {EffectivelyAllocatingPool} from "../src/EffectivelyAllocatingPool.sol";
+import {EfficientlyAllocatingPool} from "../src/EfficientlyAllocatingPool.sol";
 import {IERC20, SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20Metadata} from "openzeppelin-contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import {AllocationConfig} from "../src/AllocationConfig.sol";
 import {DelayedWithdrawalTool} from "../src/DelayedWithdrawalTool.sol";
 import {Allocator} from "../src/Allocator.sol";
-import {EffectivelyAllocatingPoolFantomTest} from "./EffectivelyAllocatingPoolFantom.t.sol";
+import {EfficientlyAllocatingPoolFantomTest} from "./EfficientlyAllocatingPoolFantom.t.sol";
 import {RewardManager1inchFantom} from "../src/RewardManager1inchFantom.sol";
 import {CompoundAdapter} from "../src/Platforms/Compound/CompoundAdapter.sol";
 import {TarotAdapter} from "../src/Platforms/Tarot/TarotAdapter.sol";
 
-contract EffectivelyAllocatingPoolFantomUsdcTest is EffectivelyAllocatingPoolFantomTest {
+contract EfficientlyAllocatingPoolFantomUsdcTest is EfficientlyAllocatingPoolFantomTest {
     function setUp() public {
         MIN_TEST_AMOUNT = 100e6;
         MAX_TEST_AMOUNT = 2e12;
@@ -69,7 +69,7 @@ contract EffectivelyAllocatingPoolFantomUsdcTest is EffectivelyAllocatingPoolFan
         platformAdapters = _platformAdapters;
         allocations = _allocations;
 
-        eap = new EffectivelyAllocatingPool(
+        eap = new EfficientlyAllocatingPool(
             underlying,
             _name,
             _symbol,

@@ -5,10 +5,10 @@ import {IERC20, SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeER
 import {ReservesAccounting} from "./ReservesAccounting.sol";
 import {CalldataDecoder} from "./CalldataDecoder.sol";
 import {IDelayedWithdrawalTool} from "./interfaces/IDelayedWithdrawalTool.sol";
-import {IEffectivelyAllocatingPool} from "./interfaces/IEffectivelyAllocatingPool.sol";
+import {IEfficientlyAllocatingPool} from "./interfaces/IEfficientlyAllocatingPool.sol";
 import "./Errors.sol";
 
-contract EffectivelyAllocatingPool is ReservesAccounting, IEffectivelyAllocatingPool {
+contract EfficientlyAllocatingPool is ReservesAccounting, IEfficientlyAllocatingPool {
     using CalldataDecoder for bytes32;
     using SafeERC20 for IERC20;
 
@@ -40,7 +40,7 @@ contract EffectivelyAllocatingPool is ReservesAccounting, IEffectivelyAllocating
 
     /// @dev performs liquidity reallocation
     /// @notice it's not possible to reallocate without fulfilling all withdrawal requests
-    /// @notice can't rugpool since can only interact with pre-approved allocations/adapters
+    /// @notice can't rug pull since can only interact with pre-approved allocations/adapters
     function allocate(bytes32[] calldata _allocationConfigs) external override onlyAllocator {
         address _underlying = underlying;
         bool isWithdrawalRequested = IDelayedWithdrawalTool(withdrawTool).isRequested();

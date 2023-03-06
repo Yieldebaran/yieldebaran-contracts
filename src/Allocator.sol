@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import {IEffectivelyAllocatingPool} from "./interfaces/IEffectivelyAllocatingPool.sol";
+import {IEfficientlyAllocatingPool} from "./interfaces/IEfficientlyAllocatingPool.sol";
 import "./Errors.sol";
 
 contract Allocator {
-    address public admin = msg.sender;
+    address public admin;
     address public allocationManager;
 
     event AdminSet(address admin);
@@ -17,6 +17,7 @@ contract Allocator {
     }
 
     constructor(address _allocationManager) {
+        admin = msg.sender;
         emit AdminSet(msg.sender);
         allocationManager = _allocationManager;
         emit AllocationManagerSet(_allocationManager);
@@ -32,11 +33,11 @@ contract Allocator {
         emit AdminSet(_admin);
     }
 
-    /// @dev allocation aggregator for all the Effectively Allocating Pools
+    /// @dev allocation aggregator for all the Efficiently Allocating Pools
     function allocate(address[] calldata _pools, bytes32[][] calldata _configs) external {
         if (msg.sender != allocationManager) revert AuthFailed();
         for (uint256 i = 0; i < _configs.length;) {
-            IEffectivelyAllocatingPool(_pools[i]).allocate(_configs[i]);
+            IEfficientlyAllocatingPool(_pools[i]).allocate(_configs[i]);
             unchecked {
                 ++i;
             }

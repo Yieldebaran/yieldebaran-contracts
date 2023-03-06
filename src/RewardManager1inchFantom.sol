@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.4;
 
-import {IEffectivelyAllocatingPool} from "./interfaces/IEffectivelyAllocatingPool.sol";
+import {IEfficientlyAllocatingPool} from "./interfaces/IEfficientlyAllocatingPool.sol";
 import {ComptrollerInterface} from "./Platforms/Compound/ComptrollerInterface.sol";
 import {IERC20} from "openzeppelin-contracts/token/ERC20/IERC20.sol";
 import {RewardManagerOnchainFantom} from "./RewardManagerOnchainFantom.sol";
@@ -28,6 +28,6 @@ contract RewardManager1inchFantom is RewardManagerOnchainFantom {
         address[] memory cTokens = new address[](1);
         cTokens[0] = _cToken;
         ComptrollerInterface(screamComptroller).claimComp(holders, cTokens, false, true);
-        IEffectivelyAllocatingPool(_eap).pullToken(scream, address(this));
+        IEfficientlyAllocatingPool(_eap).pullToken(scream, address(this));
     }
 }

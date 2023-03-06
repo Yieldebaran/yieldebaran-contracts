@@ -1,7 +1,6 @@
 name: test
 
 on: workflow_dispatch
-
 env:
   FOUNDRY_PROFILE: ci
   FANTOM_RPC_URL: https://rpc.ankr.com/fantom

@@ -41,6 +41,7 @@ contract AllocationConfig is Auth, PlatformCaller, IAllocationConfig {
     }
 
     function _enableAllocation(address _underlying, address _allocation, address _platformAdapter) internal {
+        if (enabledAllocations.length == 50) revert TooManyPools();
         if (platformAdapter[_allocation] != address(0)) revert AllocationAlreadyExists(_allocation);
 
         address _underlyingOfAllocation = _getUnderlying(_platformAdapter, _allocation);

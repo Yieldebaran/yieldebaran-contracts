@@ -5,24 +5,24 @@ import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 import "forge-std/console.sol";
 import "forge-std/console2.sol";
-import {EffectivelyAllocatingPool} from "../src/EffectivelyAllocatingPool.sol";
+import {EfficientlyAllocatingPool} from "../src/EfficientlyAllocatingPool.sol";
 import {IERC20, SafeERC20} from "openzeppelin-contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20Metadata} from "openzeppelin-contracts/token/ERC20/extensions/IERC20Metadata.sol";
 import {AllocationConfig} from "../src/AllocationConfig.sol";
 import {DelayedWithdrawalToolEth} from "../src/DelayedWithdrawalToolEth.sol";
 import {DelayedWithdrawalTool} from "../src/DelayedWithdrawalTool.sol";
 import {Allocator} from "../src/Allocator.sol";
-import {EffectivelyAllocatingPoolFantomTest} from "./EffectivelyAllocatingPoolFantom.t.sol";
+import {EfficientlyAllocatingPoolFantomTest} from "./EfficientlyAllocatingPoolFantom.t.sol";
 import {RewardManager1inchFantom} from "../src/RewardManager1inchFantom.sol";
-import {EffectivelyAllocatingPoolEth} from "../src/EffectivelyAllocatingPoolEth.sol";
+import {EfficientlyAllocatingPoolEth} from "../src/EfficientlyAllocatingPoolEth.sol";
 import {EthAdapter} from "../src/EthAdapter.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
 import {CompoundAdapter} from "../src/Platforms/Compound/CompoundAdapter.sol";
 import {TarotAdapter} from "../src/Platforms/Tarot/TarotAdapter.sol";
 import "../src/Errors.sol";
 
-contract EffectivelyAllocatingPoolFantomFtmTest is EffectivelyAllocatingPoolFantomTest {
-    EffectivelyAllocatingPoolEth public eapEth;
+contract EfficientlyAllocatingPoolFantomFtmTest is EfficientlyAllocatingPoolFantomTest {
+    EfficientlyAllocatingPoolEth public eapEth;
     EthAdapter public ethAdapter;
     DelayedWithdrawalToolEth public withdrawToolEth;
 
@@ -85,7 +85,7 @@ contract EffectivelyAllocatingPoolFantomFtmTest is EffectivelyAllocatingPoolFant
         platformAdapters = _platformAdapters;
         allocations = _allocations;
 
-        eapEth = new EffectivelyAllocatingPoolEth(
+        eapEth = new EfficientlyAllocatingPoolEth(
             underlying,
             _name,
             _symbol,
@@ -98,7 +98,7 @@ contract EffectivelyAllocatingPoolFantomFtmTest is EffectivelyAllocatingPoolFant
             _platformAdapters
         );
 
-        eap = EffectivelyAllocatingPool(address(eapEth));
+        eap = EfficientlyAllocatingPool(address(eapEth));
         deployedContracts++;
 
         ethAdapter = new EthAdapter(address(eapEth));
