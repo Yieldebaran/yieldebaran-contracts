@@ -1,3 +1,5 @@
+[![test](https://github.com/Yieldebaran/yieldebaran-contracts/actions/workflows/test.yml/badge.svg)](https://github.com/Yieldebaran/yieldebaran-contracts/actions/workflows/test.yml)
+
 # Yieldebaran
 
 This repository contains core smart contracts for the Efficiently Allocating Protocol "Yieldebaran V0".
