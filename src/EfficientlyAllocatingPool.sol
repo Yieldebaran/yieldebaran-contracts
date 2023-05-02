@@ -86,21 +86,6 @@ contract EfficientlyAllocatingPool is ReservesAccounting, IEfficientlyAllocating
         _claimReward(platformAdapter, _allocation);
     }
 
-    /// @notice yeah, it's really unpleasant to have such a function in the contract of DeFi protocol
-    /// @notice but it's required for extreme sutuations that unfortunately could happen considering the early stage of the project
-    /// @notice txs can be queued only through the special emergency time lock contract
-    /// @notice emergency time lock contract should and will be monitored by users/community with special caution
-    /// @notice as a dev I personally don't like it, but it's better to have a possibility to prevent disaster than not to have
-    /// @notice it's not possible to perform custom actions without fulfilling withdrawal requests
-    function doSomething(address[] calldata callees, bytes[] calldata data) external override onlyEmergencyTimeLock {
-        if (IDelayedWithdrawalTool(withdrawTool).isRequested()) revert WithdrawalRequestsNotFulfilled();
-        for (uint256 i = 0; i < callees.length; ++i) {
-            (bool b, bytes memory a) = callees[i].call(data[i]);
-            a;
-            b;
-        }
-    }
-
     /// @notice can be used to claim additional liquidity incentives and so on
     function pullToken(address _token, address _to)
         external

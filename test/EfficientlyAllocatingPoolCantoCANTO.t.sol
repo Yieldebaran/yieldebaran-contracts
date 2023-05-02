@@ -12,16 +12,14 @@ import {AllocationConfig} from "../src/AllocationConfig.sol";
 import {DelayedWithdrawalToolEth} from "../src/DelayedWithdrawalToolEth.sol";
 import {DelayedWithdrawalTool} from "../src/DelayedWithdrawalTool.sol";
 import {Allocator} from "../src/Allocator.sol";
-import {EfficientlyAllocatingPoolFantomTest} from "./EfficientlyAllocatingPoolFantom.t.sol";
-import {RewardManager1inchFantom} from "../src/RewardManager1inchFantom.sol";
+import {EfficientlyAllocatingPoolCantoTest} from "./EfficientlyAllocatingPoolCanto.t.sol";
 import {EfficientlyAllocatingPoolEth} from "../src/EfficientlyAllocatingPoolEth.sol";
 import {EthAdapter} from "../src/EthAdapter.sol";
 import {Address} from "openzeppelin-contracts/utils/Address.sol";
-import {CompoundAdapter} from "../src/Platforms/Compound/CompoundAdapter.sol";
 import {TarotAdapter} from "../src/Platforms/Tarot/TarotAdapter.sol";
 import "../src/Errors.sol";
 
-contract EfficientlyAllocatingPoolFantomFtmTest is EfficientlyAllocatingPoolFantomTest {
+contract EfficientlyAllocatingPoolCantoCANTOTest is EfficientlyAllocatingPoolCantoTest {
     EfficientlyAllocatingPoolEth public eapEth;
     EthAdapter public ethAdapter;
     DelayedWithdrawalToolEth public withdrawToolEth;
@@ -37,21 +35,18 @@ contract EfficientlyAllocatingPoolFantomFtmTest is EfficientlyAllocatingPoolFant
         uint256 fork = vm.createFork(rpcUrl);
         vm.selectFork(fork);
 
-        vm.rollFork(60465680);
+        vm.rollFork(4037852);
 
-        deployedContracts++;
+//        deployedContracts++;
 
-        underlying = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
+        underlying = 0x826551890Dc65655a0Aceca109aB11AbDbD7a07B;
         precisionError = 10 ** (18 - IERC20Metadata(underlying).decimals());
-        string memory _name = "Yieldebaran FTM";
-        string memory _symbol = "yFTM";
+        string memory _name = "Yieldebaran CANTO";
+        string memory _symbol = "yCANTO";
         allocator = new Allocator(address(this));
         deployedContracts++;
 
         tarotAdapter = address(new TarotAdapter());
-        deployedContracts++;
-
-        compoundAdapter = new CompoundAdapter();
         deployedContracts++;
 
         address _timeLock = address(this);
@@ -60,29 +55,19 @@ contract EfficientlyAllocatingPoolFantomFtmTest is EfficientlyAllocatingPoolFant
         withdrawToolEth = new DelayedWithdrawalToolEth(poolAddress, underlying);
         withdrawTool = DelayedWithdrawalTool(address(withdrawToolEth));
         deployedContracts++;
-        rewardManager = new RewardManager1inchFantom(address(this), address(this));
-        deployedContracts++;
-        address[] memory _allocations = new address[](10);
+        address[] memory _allocations = new address[](5);
         uint256 i = 0;
-        _allocations[i++] = 0x47c7B3f5Fa0d52Dfd51bB04977235adBE32a3002;
-        _allocations[i++] = 0x0a09C62B10E02882Dea69D84641861292e9ba1d1;
-        _allocations[i++] = 0x6e11aaD63d11234024eFB6f7Be345d1d5b8a8f38;
-        _allocations[i++] = 0x06E37d44D85f72FcAb3fE743A129c704D21BAd6f;
-        _allocations[i++] = 0x0FEeC300a8C3Faee5DE4925BAe909f1E0a87C496;
-        _allocations[i++] = 0x331b24bb66CF2Bca632a0d93F313AB9803040aF8;
-        _allocations[i++] = 0xe29469dbC294e8DB201dD1FE8BC60372D3e6250E;
-        _allocations[i++] = 0x9560941D7B708699bD2fe4970D5B85d2AE8863bd;
-        _allocations[i++] = 0x160E51718D1d16E944cAdB44760205434Ee0Fa7b;
-
-        screamIndex = i;
-        _allocations[i] = 0xb681F4928658a8d54bd4773F5B5DEAb35d63c3CF;
+        _allocations[i++] = 0xA6eA88C4528f2d29BbD7fe803CB3D96946fa7447;
+        _allocations[i++] = 0x116E3178a857Bc86cACDDDcE854A4662AaE1b133;
+        _allocations[i++] = 0xe1CC87271c24FED7E2F6f91D929f6969bFA84A16;
+        _allocations[i++] = 0x41275C2B376a8F304833b428bd51D4B891dC7228;
+        _allocations[i++] = 0x0Ea0C959aB53D5896dAA77170A55031203e5A0df;
 
         i = 0;
         address[] memory _platformAdapters = new address[](_allocations.length);
-        for (uint j = 0; j < screamIndex; j++) {
+        for (uint j = 0; j < _allocations.length; j++) {
             _platformAdapters[j] = address(tarotAdapter);
         }
-        _platformAdapters[screamIndex] = address(compoundAdapter);
 
         platformAdapters = _platformAdapters;
         allocations = _allocations;
@@ -92,34 +77,22 @@ contract EfficientlyAllocatingPoolFantomFtmTest is EfficientlyAllocatingPoolFant
             _name,
             _symbol,
             address(allocator),
-            address(rewardManager),
+            address(address(this)),
             _timeLock,
             _emergencyTimeLock,
             address(withdrawTool),
             _allocations,
             _platformAdapters
         );
+        deployedContracts++;
 
         eap = EfficientlyAllocatingPool(address(eapEth));
-        deployedContracts++;
 
         ethAdapter = new EthAdapter(address(eapEth));
         deployedContracts++;
         assertEq(poolAddress, address(eap));
         eap.setRestrictionPhaseStatus(false);
-    }
-
-    function _encodeScreamToUnderlyingSwap(uint256 _amount, address _destReceiver)
-        internal
-        pure
-        override
-        returns (bytes memory)
-    {
-        bytes memory start =
-            hex"12aa3caf0000000000000000000000005d0ec1f843c1233d304b96dbde0cab9ec04d71ef000000000000000000000000e0654c8e6fd4d733349ac7e09f6f23da256bf47500000000000000000000000021be370d5312f44cb42ce377bc9b8a0cef1a4c8300000000000000000000000030872e4fc4edbfd7a352bfc2463eb4fae9c09086";
-        bytes memory end =
-            hex"00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009f00000000000000000000000000000000000000000000000000008100005300206ae4071118002dc6c030872e4fc4edbfd7a352bfc2463eb4fae9c090860000000000000000000000000000000000000000000000000000000000000001e0654c8e6fd4d733349ac7e09f6f23da256bf47580a06c4eca2721be370d5312f44cb42ce377bc9b8a0cef1a4c831111111254eeb25477b68fb85ed929f73a9605820000000000";
-        return bytes.concat(start, abi.encode(_destReceiver), abi.encode(_amount), end);
+        console2.log("deployed");
     }
 
     function testDepositEth(address _from, uint256 _amount) public {

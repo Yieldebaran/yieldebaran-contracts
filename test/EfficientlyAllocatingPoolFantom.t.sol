@@ -20,82 +20,82 @@ abstract contract EfficientlyAllocatingPoolFantomTest is EfficientlyAllocatingPo
 
     string rpcUrl = vm.envString("FANTOM_RPC_URL");
 
-    function testRewardCompounding(uint88 _amount) public {
-        _amount = uint88(bound(_amount, MIN_TEST_AMOUNT, MAX_TEST_AMOUNT));
-        address _allocation = allocations[screamIndex];
-        deal(underlying, address(this), _amount);
-        IERC20(underlying).approve(address(eap), _amount);
-        eap.deposit(_amount);
+//    function testRewardCompounding(uint88 _amount) public {
+//        _amount = uint88(bound(_amount, MIN_TEST_AMOUNT, MAX_TEST_AMOUNT));
+//        address _allocation = allocations[screamIndex];
+//        deal(underlying, address(this), _amount);
+//        IERC20(underlying).approve(address(eap), _amount);
+//        eap.deposit(_amount);
+//
+//        address[] memory _eaps = new address[](1);
+//        _eaps[0] = address(eap);
+//        bytes32[][] memory _configs = new bytes32[][](1);
+//        bytes32[] memory _configsFirst = new bytes32[](1);
+//        _configsFirst[0] = _encodeAllocation(_allocation, _amount, false, true);
+//        _configs[0] = _configsFirst;
+//
+//        allocator.allocate(_eaps, _configs);
+//
+//        _advanceTime(7 * 24 * 3600);
+//
+//        rewardManager.claimScream(address(eap), _allocation);
+//        assertGt(IERC20(scream).balanceOf(address(rewardManager)), 0);
+//    }
 
-        address[] memory _eaps = new address[](1);
-        _eaps[0] = address(eap);
-        bytes32[][] memory _configs = new bytes32[][](1);
-        bytes32[] memory _configsFirst = new bytes32[](1);
-        _configsFirst[0] = _encodeAllocation(_allocation, _amount, false, true);
-        _configs[0] = _configsFirst;
+//    function testRewardDistributionOnchain(uint88 _amount) public {
+//        _amount = uint88(bound(_amount, MIN_TEST_AMOUNT, MAX_TEST_AMOUNT));
+//        address _allocationScream = allocations[screamIndex];
+//        deal(underlying, address(this), _amount);
+//        IERC20(underlying).approve(address(eap), _amount);
+//        eap.deposit(_amount);
+//
+//        address[] memory _eaps = new address[](1);
+//        _eaps[0] = address(eap);
+//        bytes32[][] memory _configs = new bytes32[][](1);
+//        bytes32[] memory _configsFirst = new bytes32[](1);
+//        _configsFirst[0] = _encodeAllocation(_allocationScream, _amount, false, true);
+//        _configs[0] = _configsFirst;
+//
+//        allocator.allocate(_eaps, _configs);
+//
+//        _advanceTime(7 * 24 * 3600);
+//
+//        // SCREAM claim
+//        bytes32[] memory claimConfigs = new bytes32[](1);
+//        claimConfigs[0] = _encodeClaim(address(eap), 0, uint8(screamIndex));
+//
+//        uint256 balanceBefore = IERC20(underlying).balanceOf(address(eap));
+//        rewardManager.distributeRewards(claimConfigs);
+//        assertGt(IERC20(underlying).balanceOf(address(eap)) - balanceBefore, 0);
+//    }
 
-        allocator.allocate(_eaps, _configs);
-
-        _advanceTime(7 * 24 * 3600);
-
-        rewardManager.claimScream(address(eap), _allocation);
-        assertGt(IERC20(scream).balanceOf(address(rewardManager)), 0);
-    }
-
-    function testRewardDistributionOnchain(uint88 _amount) public {
-        _amount = uint88(bound(_amount, MIN_TEST_AMOUNT, MAX_TEST_AMOUNT));
-        address _allocationScream = allocations[screamIndex];
-        deal(underlying, address(this), _amount);
-        IERC20(underlying).approve(address(eap), _amount);
-        eap.deposit(_amount);
-
-        address[] memory _eaps = new address[](1);
-        _eaps[0] = address(eap);
-        bytes32[][] memory _configs = new bytes32[][](1);
-        bytes32[] memory _configsFirst = new bytes32[](1);
-        _configsFirst[0] = _encodeAllocation(_allocationScream, _amount, false, true);
-        _configs[0] = _configsFirst;
-
-        allocator.allocate(_eaps, _configs);
-
-        _advanceTime(7 * 24 * 3600);
-
-        // SCREAM claim
-        bytes32[] memory claimConfigs = new bytes32[](1);
-        claimConfigs[0] = _encodeClaim(address(eap), 0, uint8(screamIndex));
-
-        uint256 balanceBefore = IERC20(underlying).balanceOf(address(eap));
-        rewardManager.distributeRewards(claimConfigs);
-        assertGt(IERC20(underlying).balanceOf(address(eap)) - balanceBefore, 0);
-    }
-
-    function testRewardDistribution1inch(uint88 _amount) public {
-        _amount = uint88(bound(_amount, MIN_TEST_AMOUNT, MAX_TEST_AMOUNT));
-        address _allocationScream = allocations[screamIndex];
-        deal(underlying, address(this), _amount);
-        IERC20(underlying).approve(address(eap), _amount);
-        eap.deposit(_amount);
-
-        address[] memory _eaps = new address[](1);
-        _eaps[0] = address(eap);
-        bytes32[][] memory _configs = new bytes32[][](1);
-        bytes32[] memory _configsFirst = new bytes32[](1);
-        _configsFirst[0] = _encodeAllocation(_allocationScream, _amount, false, true);
-        _configs[0] = _configsFirst;
-
-        allocator.allocate(_eaps, _configs);
-
-        _advanceTime(7 * 24 * 3600);
-
-        // SCREAM claim
-        uint256 balanceBefore = IERC20(underlying).balanceOf(address(eap));
-        rewardManager.claimScream(address(eap), _allocationScream);
-        uint256 screamAmount = IERC20(scream).balanceOf(address(rewardManager));
-        rewardManager.distributeScream(
-            address(eap), _allocationScream, _encodeScreamToUnderlyingSwap(screamAmount, address(eap))
-        );
-        assertGt(IERC20(underlying).balanceOf(address(eap)) - balanceBefore, 0);
-    }
+//    function testRewardDistribution1inch(uint88 _amount) public {
+//        _amount = uint88(bound(_amount, MIN_TEST_AMOUNT, MAX_TEST_AMOUNT));
+//        address _allocationScream = allocations[screamIndex];
+//        deal(underlying, address(this), _amount);
+//        IERC20(underlying).approve(address(eap), _amount);
+//        eap.deposit(_amount);
+//
+//        address[] memory _eaps = new address[](1);
+//        _eaps[0] = address(eap);
+//        bytes32[][] memory _configs = new bytes32[][](1);
+//        bytes32[] memory _configsFirst = new bytes32[](1);
+//        _configsFirst[0] = _encodeAllocation(_allocationScream, _amount, false, true);
+//        _configs[0] = _configsFirst;
+//
+//        allocator.allocate(_eaps, _configs);
+//
+//        _advanceTime(7 * 24 * 3600);
+//
+//        // SCREAM claim
+//        uint256 balanceBefore = IERC20(underlying).balanceOf(address(eap));
+//        rewardManager.claimScream(address(eap), _allocationScream);
+//        uint256 screamAmount = IERC20(scream).balanceOf(address(rewardManager));
+//        rewardManager.distributeScream(
+//            address(eap), _allocationScream, _encodeScreamToUnderlyingSwap(screamAmount, address(eap))
+//        );
+//        assertGt(IERC20(underlying).balanceOf(address(eap)) - balanceBefore, 0);
+//    }
 
     function _encodeClaim(address _pool, uint88 _amount, uint8 _index) internal pure returns (bytes32) {
         bytes memory data = abi.encodePacked(_pool, _amount, _index);

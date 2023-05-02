@@ -40,9 +40,6 @@ interface IEfficientlyAllocatingPool {
 
     function disableAllocation(address _allocation) external;
 
-    function doSomething(address[] memory callees, bytes[] memory data)
-    external;
-
     function emergencyTimeLock() external view returns (address);
 
     function enableAllocation(address _allocation, address _platformAdapter)
