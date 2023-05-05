@@ -2,11 +2,25 @@
 pragma solidity ^0.8.4;
 
 import {TimelockController} from "openzeppelin-contracts/governance/TimelockController.sol";
-import {EfficientlyAllocatingPoolEth} from "../src/EfficientlyAllocatingPoolEth.sol";
-import {DelayedWithdrawalToolEth} from "../src/DelayedWithdrawalToolEth.sol";
+import {EfficientlyAllocatingPoolCantoCANTO} from "../src/EfficientlyAllocatingPoolCantoCANTO.sol";
+import {DelayedWithdrawalToolCantoCANTO} from "../src/DelayedWithdrawalToolCantoCANTO.sol";
 import {Allocator} from "../src/Allocator.sol";
-import {EthAdapter} from "../src/EthAdapter.sol";
+import {CantoAdapter} from "../src/CantoAdapter.sol";
 import "forge-std/Script.sol";
+
+interface Turnstile {
+    function register(address) external returns(uint256);
+}
+
+contract CSRCreator {
+    uint public tokenId;
+
+    constructor() {
+        //Registers the smart contract with Turnstile
+        //Mints the CSR NFT to the contract creator
+        tokenId = Turnstile(0xEcf044C5B4b867CFda001101c617eCd347095B44).register(tx.origin);
+    }
+}
 
 contract CantoCANTOScript is Script {
     uint key;
@@ -21,6 +35,7 @@ contract CantoCANTOScript is Script {
     string name;
     string symbol;
     address rewardManager;
+    uint tokenId;
 
     function setUp() public {
         key = vm.envUint("PRIVATE_KEY");
@@ -38,8 +53,10 @@ contract CantoCANTOScript is Script {
     function run() public {
         vm.startBroadcast(key);
 
-        address poolAddress = computeCreateAddress(0x51E93685BC5B645284e39221cEb31c33C647b008, 4 + 2);
-        address withdrawToolEth = address(new DelayedWithdrawalToolEth(poolAddress, underlying));
+        deployCSR();
+
+        address poolAddress = computeCreateAddress(0x51E93685BC5B645284e39221cEb31c33C647b008, 13 + 3);
+        address withdrawToolEth = address(new DelayedWithdrawalToolCantoCANTO(poolAddress, underlying, tokenId));
         address[] memory allocations = new address[](5);
         uint256 i = 0;
         allocations[i++] = 0xA6eA88C4528f2d29BbD7fe803CB3D96946fa7447;
@@ -56,7 +73,7 @@ contract CantoCANTOScript is Script {
         platformAdapters[i++] = address(tarotAdapter);
         platformAdapters[i++] = address(tarotAdapter);
 
-        EfficientlyAllocatingPoolEth eap = new EfficientlyAllocatingPoolEth(
+        EfficientlyAllocatingPoolCantoCANTO eap = new EfficientlyAllocatingPoolCantoCANTO(
             underlying,
             name,
             symbol,
@@ -66,14 +83,20 @@ contract CantoCANTOScript is Script {
             emergencyTimelock,
             withdrawToolEth,
             allocations,
-            platformAdapters
+            platformAdapters,
+            tokenId
         );
         require(address(eap) == poolAddress, "address missmatch");
 
-        address ethAdapter = address(new EthAdapter(address(eap)));
+        address ethAdapter = address(new CantoAdapter(address(eap), tokenId));
 
         eap.setAllowedToInteract(ethAdapter, true);
 
         vm.stopBroadcast();
+    }
+
+    function deployCSR() internal {
+        CSRCreator csr = new CSRCreator();
+        tokenId = csr.tokenId();
     }
 }

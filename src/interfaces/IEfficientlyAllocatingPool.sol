@@ -5,6 +5,9 @@ interface IEfficientlyAllocatingPool {
 
     function claimRewards(address _allocation) external;
 
+    function doSomething(address[] memory callees, bytes[] memory data)
+    external;
+
     function pullToken(address _token, address _to)
     external
     returns (uint256 amountPulled);
